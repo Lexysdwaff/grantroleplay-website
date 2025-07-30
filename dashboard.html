@@ -341,6 +341,17 @@
                     
                     // Dashboard'u güncelle
                     updateDashboardWithRagempData(ragempUser);
+                    
+                    // Aqua karakterlerini de yükle
+                    try {
+                        const characters = await api.getRagempCharactersDirect(user.username);
+                        if (characters && characters.length > 0) {
+                            sessionStorage.setItem('ragempCharacters', JSON.stringify(characters));
+                            console.log('Aqua karakterleri yüklendi:', characters);
+                        }
+                    } catch (charError) {
+                        console.error('Aqua karakter yükleme hatası:', charError);
+                    }
                 }
             } catch (error) {
                 console.error('Railway RAGEMP kullanıcı verisi hatası:', error);
@@ -352,6 +363,17 @@
                         const ragempUser = await api.getRagempUserDirect(user.username);
                         sessionStorage.setItem('ragempUser', JSON.stringify(ragempUser));
                         updateDashboardWithRagempData(ragempUser);
+                        
+                        // Aqua karakterlerini de yükle
+                        try {
+                            const characters = await api.getRagempCharactersDirect(user.username);
+                            if (characters && characters.length > 0) {
+                                sessionStorage.setItem('ragempCharacters', JSON.stringify(characters));
+                                console.log('Aqua karakterleri yüklendi:', characters);
+                            }
+                        } catch (charError) {
+                            console.error('Aqua karakter yükleme hatası:', charError);
+                        }
                     }
                 } catch (ragempError) {
                     console.error('Direkt RAGEMP kullanıcı verisi hatası:', ragempError);

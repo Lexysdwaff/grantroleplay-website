@@ -168,6 +168,11 @@ class API {
         });
     }
 
+    // Aqua'dan kullanıcının karakterlerini getir (direkt bağlantı)
+    async getRagempCharactersDirect(username) {
+        return await this.ragempRequest(`/ragemp/user/${username}/characters`);
+    }
+
     // Token geçerli mi kontrol et
     isAuthenticated() {
         return !!this.token;
