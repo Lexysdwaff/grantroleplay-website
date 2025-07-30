@@ -10,8 +10,7 @@ class API {
             this.baseURL = 'http://localhost:3000/api';
         } else {
             // Hosting için - Railway backend URL'i
-            // Bu URL'i Railway deploy ettikten sonra güncelleyeceğiz
-            this.baseURL = 'https://grantroleplay-backend.railway.app/api';
+            this.baseURL = 'https://grantroleplay-website-production.up.railway.app/api';
         }
         
         this.token = localStorage.getItem('token');
