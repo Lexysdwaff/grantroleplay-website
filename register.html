@@ -166,6 +166,20 @@
                     steam_username: steamUsername || null
                 });
                 
+                // RAGEMP server'ına da kaydet
+                try {
+                    await api.registerToRagempDirect({
+                        username,
+                        email,
+                        discord_username: discordUsername || null,
+                        steam_username: steamUsername || null
+                    });
+                    console.log('Kullanıcı RAGEMP server\'ına kaydedildi');
+                } catch (ragempError) {
+                    console.error('RAGEMP server kayıt hatası:', ragempError);
+                    // RAGEMP hatası olsa bile devam et
+                }
+                
                 // Kullanıcı bilgilerini session storage'a kaydet
                 sessionStorage.setItem('user', JSON.stringify(response.user));
                 
