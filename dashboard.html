@@ -290,15 +290,14 @@
                 document.getElementById('loginTime').textContent = loginDate.toLocaleString('tr-TR');
             }
 
-            // Load RAGEMP server status
-            loadRagempStatus();
+            // Load server status
+            loadServerStatus();
         }
 
-        // RAGEMP server durumunu yükle
-        async function loadRagempStatus() {
+        // Server durumunu yükle
+        async function loadServerStatus() {
             try {
-                // Önce Railway backend'den dene
-                const status = await api.getRagempStatus();
+                const status = await api.getServerStatus();
                 document.getElementById('onlinePlayers').textContent = status.online_players || 0;
                 
                 // Server status badge'ini güncelle
@@ -308,92 +307,9 @@
                     serverStatus.textContent = status.status === 'online' ? 'Çevrimiçi' : 'Çevrimdışı';
                 }
             } catch (error) {
-                console.error('Railway RAGEMP durum hatası:', error);
-                
-                // Railway başarısız olursa direkt RAGEMP server'ına bağlan
-                try {
-                    const status = await api.getRagempStatusDirect();
-                    document.getElementById('onlinePlayers').textContent = status.online_players || 0;
-                    
-                    const serverStatus = document.querySelector('.server-status');
-                    if (serverStatus) {
-                        serverStatus.className = `server-status ${status.status === 'online' ? 'online' : 'offline'}`;
-                        serverStatus.textContent = status.status === 'online' ? 'Çevrimiçi' : 'Çevrimdışı';
-                    }
-                } catch (ragempError) {
-                    console.error('Direkt RAGEMP durum hatası:', ragempError);
-                    // Fallback to demo data
-                    document.getElementById('onlinePlayers').textContent = Math.floor(Math.random() * 50) + 10;
-                }
-            }
-        }
-
-        // RAGEMP'den kullanıcı verilerini yükle
-        async function loadRagempUserData() {
-            try {
-                const user = JSON.parse(sessionStorage.getItem('user') || '{}');
-                if (user.username) {
-                    // Önce Railway backend'den dene
-                    const ragempUser = await api.getRagempUser(user.username);
-                    
-                    // RAGEMP verilerini session storage'a kaydet
-                    sessionStorage.setItem('ragempUser', JSON.stringify(ragempUser));
-                    
-                    // Dashboard'u güncelle
-                    updateDashboardWithRagempData(ragempUser);
-                    
-                    // Aqua karakterlerini de yükle
-                    try {
-                        const characters = await api.getRagempCharactersDirect(user.username);
-                        if (characters && characters.length > 0) {
-                            sessionStorage.setItem('ragempCharacters', JSON.stringify(characters));
-                            console.log('Aqua karakterleri yüklendi:', characters);
-                        }
-                    } catch (charError) {
-                        console.error('Aqua karakter yükleme hatası:', charError);
-                    }
-                }
-            } catch (error) {
-                console.error('Railway RAGEMP kullanıcı verisi hatası:', error);
-                
-                // Railway başarısız olursa direkt RAGEMP server'ına bağlan
-                try {
-                    const user = JSON.parse(sessionStorage.getItem('user') || '{}');
-                    if (user.username) {
-                        const ragempUser = await api.getRagempUserDirect(user.username);
-                        sessionStorage.setItem('ragempUser', JSON.stringify(ragempUser));
-                        updateDashboardWithRagempData(ragempUser);
-                        
-                        // Aqua karakterlerini de yükle
-                        try {
-                            const characters = await api.getRagempCharactersDirect(user.username);
-                            if (characters && characters.length > 0) {
-                                sessionStorage.setItem('ragempCharacters', JSON.stringify(characters));
-                                console.log('Aqua karakterleri yüklendi:', characters);
-                            }
-                        } catch (charError) {
-                            console.error('Aqua karakter yükleme hatası:', charError);
-                        }
-                    }
-                } catch (ragempError) {
-                    console.error('Direkt RAGEMP kullanıcı verisi hatası:', ragempError);
-                }
-            }
-        }
-
-        // RAGEMP verilerini dashboard'a uygula
-        function updateDashboardWithRagempData(ragempUser) {
-            if (ragempUser.character_name) {
-                document.getElementById('characterName').textContent = ragempUser.character_name;
-            }
-            if (ragempUser.level) {
-                document.getElementById('characterLevel').textContent = ragempUser.level;
-            }
-            if (ragempUser.job) {
-                document.getElementById('characterJob').textContent = ragempUser.job;
-            }
-            if (ragempUser.money) {
-                document.getElementById('characterMoney').textContent = `${ragempUser.money.toLocaleString()}₺`;
+                console.error('Server durum hatası:', error);
+                // Fallback to demo data
+                document.getElementById('onlinePlayers').textContent = Math.floor(Math.random() * 50) + 10;
             }
         }
 
@@ -422,7 +338,7 @@
 
         function refreshData() {
             loadDashboardData();
-            loadRagempUserData();
+            loadServerStatus();
             alert('Veriler yenilendi!');
         }
 
