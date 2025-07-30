@@ -124,7 +124,7 @@ class API {
 
     // RAGEMP server'a direkt bağlan
     async ragempRequest(endpoint, options = {}) {
-        const ragempURL = 'http://127.0.0.1:22005/api';
+        const ragempURL = 'http://127.0.0.1:3010/api';
         const url = `${ragempURL}${endpoint}`;
         
         const config = {
