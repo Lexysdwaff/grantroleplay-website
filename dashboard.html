@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Grant Roleplay</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="logo">
+                <a href="index.html">
+                    <img src="images/logo.png" alt="Grant Roleplay">
+                </a>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html"><i class="fas fa-home"></i> Ana Sayfa</a></li>
+                    <li><a href="nasil-oynanir.html"><i class="fas fa-gamepad"></i> Nasıl Oynanır</a></li>
+                    <li><a href="bagis.html"><i class="fas fa-heart"></i> Bağış</a></li>
+                </ul>
+            </nav>
+            <div class="auth-buttons">
+                <!-- Bu kısım JavaScript ile güncellenecek -->
+            </div>
+        </div>
+    </header>
+
+    <!-- Dashboard Content -->
+    <div class="dashboard-page">
+        <div class="dashboard-container">
+            <!-- Welcome Section -->
+            <div class="welcome-section">
+                <div class="welcome-content">
+                    <h1>Hoş Geldiniz!</h1>
+                    <p id="userWelcome">Kullanıcı bilgileri yükleniyor...</p>
+                </div>
+                <div class="welcome-actions">
+                    <button class="dashboard-btn primary" onclick="connectToServer()">
+                        <i class="fas fa-play"></i>
+                        <span>Sunucuya Bağlan</span>
+                    </button>
+                    <button class="dashboard-btn secondary" onclick="refreshData()">
+                        <i class="fas fa-sync-alt"></i>
+                        <span>Verileri Yenile</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- User Info Cards -->
+            <div class="dashboard-grid">
+                <!-- User Profile Card -->
+                <div class="dashboard-card profile-card">
+                    <div class="card-header">
+                        <i class="fas fa-user-circle"></i>
+                        <h3>Profil Bilgileri</h3>
+                    </div>
+                    <div class="card-content">
+                        <div class="profile-info">
+                            <div class="info-item">
+                                <span class="label">Kullanıcı Adı:</span>
+                                <span class="value" id="profileUsername">-</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="label">E-posta:</span>
+                                <span class="value" id="profileEmail">-</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="label">Kayıt Tarihi:</span>
+                                <span class="value" id="profileRegisterDate">-</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="label">Discord:</span>
+                                <span class="value" id="profileDiscord">-</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="label">Steam:</span>
+                                <span class="value" id="profileSteam">-</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Character Stats Card -->
+                <div class="dashboard-card stats-card">
+                    <div class="card-header">
+                        <i class="fas fa-chart-line"></i>
+                        <h3>Karakter İstatistikleri</h3>
+                    </div>
+                    <div class="card-content">
+                        <div class="character-stats">
+                            <div class="stat-item">
+                                <div class="stat-icon">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <div class="stat-info">
+                                    <span class="stat-value" id="characterName">-</span>
+                                    <span class="stat-label">Karakter Adı</span>
+                                </div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-icon">
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <div class="stat-info">
+                                    <span class="stat-value" id="characterLevel">-</span>
+                                    <span class="stat-label">Seviye</span>
+                                </div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-icon">
+                                    <i class="fas fa-briefcase"></i>
+                                </div>
+                                <div class="stat-info">
+                                    <span class="stat-value" id="characterJob">-</span>
+                                    <span class="stat-label">Meslek</span>
+                                </div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-icon">
+                                    <i class="fas fa-coins"></i>
+                                </div>
+                                <div class="stat-info">
+                                    <span class="stat-value" id="characterMoney">-</span>
+                                    <span class="stat-label">Para</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions Card -->
+                <div class="dashboard-card actions-card">
+                    <div class="card-header">
+                        <i class="fas fa-bolt"></i>
+                        <h3>Hızlı İşlemler</h3>
+                    </div>
+                    <div class="card-content">
+                        <div class="quick-actions">
+                            <button class="action-btn" onclick="openDonation()">
+                                <i class="fas fa-heart"></i>
+                                <span>Bağış Yap</span>
+                            </button>
+                            <button class="action-btn" onclick="openRules()">
+                                <i class="fas fa-book"></i>
+                                <span>Kurallar</span>
+                            </button>
+                            <button class="action-btn" onclick="openSupport()">
+                                <i class="fas fa-headset"></i>
+                                <span>Destek</span>
+                            </button>
+                            <button class="action-btn" onclick="openDiscord()">
+                                <i class="fab fa-discord"></i>
+                                <span>Discord</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Server Status Card -->
+                <div class="dashboard-card server-card">
+                    <div class="card-header">
+                        <i class="fas fa-server"></i>
+                        <h3>Sunucu Durumu</h3>
+                    </div>
+                    <div class="card-content">
+                        <div class="server-status">
+                            <div class="status-item">
+                                <div class="status-indicator online"></div>
+                                <div class="status-info">
+                                    <span class="status-value">Online</span>
+                                    <span class="status-label">Sunucu Durumu</span>
+                                </div>
+                            </div>
+                            <div class="status-item">
+                                <div class="status-icon">
+                                    <i class="fas fa-users"></i>
+                                </div>
+                                <div class="status-info">
+                                    <span class="status-value" id="onlinePlayers">-</span>
+                                    <span class="status-label">Online Oyuncu</span>
+                                </div>
+                            </div>
+                            <div class="status-item">
+                                <div class="status-icon">
+                                    <i class="fas fa-clock"></i>
+                                </div>
+                                <div class="status-info">
+                                    <span class="status-value">24/7</span>
+                                    <span class="status-label">Çalışma Süresi</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="activity-section">
+                <h2>Son Aktiviteler</h2>
+                <div class="activity-list" id="activityList">
+                    <div class="activity-item">
+                        <div class="activity-icon">
+                            <i class="fas fa-sign-in-alt"></i>
+                        </div>
+                        <div class="activity-content">
+                            <span class="activity-title">Giriş Yapıldı</span>
+                            <span class="activity-time" id="loginTime">-</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">
+                <img src="images/logo.png" alt="Grant Roleplay">
+                <p>Grant Roleplay - En İyi RAGEMP Deneyimi</p>
+            </div>
+            <div class="footer-links">
+                <h4>Hızlı Linkler</h4>
+                <ul>
+                    <li><a href="index.html">Ana Sayfa</a></li>
+                    <li><a href="nasil-oynanir.html">Nasıl Oynanır</a></li>
+                    <li><a href="bagis.html">Bağış</a></li>
+                </ul>
+            </div>
+            <div class="footer-social">
+                <h4>Sosyal Medya</h4>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-discord"></i></a>
+                    <a href="#"><i class="fab fa-steam"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="api.js"></script>
+    <script src="script.js"></script>
+    <script>
+        // Dashboard specific JavaScript
+        document.addEventListener('DOMContentLoaded', function() {
+            loadDashboardData();
+            updateAuthButtons();
+        });
+
+        function loadDashboardData() {
+            const user = JSON.parse(sessionStorage.getItem('user') || '{}');
+            const characters = JSON.parse(sessionStorage.getItem('characters') || '[]');
+            const character = characters[0] || {};
+
+            // Update user welcome message
+            const userWelcome = document.getElementById('userWelcome');
+            if (user.username) {
+                userWelcome.textContent = `Hoş geldiniz, ${user.username}!`;
+            }
+
+            // Update profile information
+            document.getElementById('profileUsername').textContent = user.username || '-';
+            document.getElementById('profileEmail').textContent = user.email || '-';
+            document.getElementById('profileDiscord').textContent = user.discordUsername || '-';
+            document.getElementById('profileSteam').textContent = user.steamUsername || '-';
+            
+            // Format register date
+            if (user.registerTime) {
+                const date = new Date(user.registerTime);
+                document.getElementById('profileRegisterDate').textContent = date.toLocaleDateString('tr-TR');
+            } else if (user.loginTime) {
+                const date = new Date(user.loginTime);
+                document.getElementById('profileRegisterDate').textContent = date.toLocaleDateString('tr-TR');
+            }
+
+            // Update character stats
+            document.getElementById('characterName').textContent = character.name || '-';
+            document.getElementById('characterLevel').textContent = character.level || '-';
+            document.getElementById('characterJob').textContent = character.job || '-';
+            document.getElementById('characterMoney').textContent = character.money ? `${character.money.toLocaleString()}₺` : '-';
+
+            // Update login time
+            if (user.loginTime) {
+                const loginDate = new Date(user.loginTime);
+                document.getElementById('loginTime').textContent = loginDate.toLocaleString('tr-TR');
+            }
+
+            // Update online players (demo)
+            document.getElementById('onlinePlayers').textContent = Math.floor(Math.random() * 50) + 10;
+        }
+
+        function updateAuthButtons() {
+            const user = JSON.parse(sessionStorage.getItem('user') || 'null');
+            const authButtons = document.querySelector('.auth-buttons');
+
+            if (user) {
+                authButtons.innerHTML = `
+                    <div class="user-info">
+                        <span>Hoş geldin, ${user.username}</span>
+                        <button onclick="logout()" class="login-btn" style="background: linear-gradient(135deg, #ff4444 0%, #cc0000 100%);">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span>Çıkış Yap</span>
+                        </button>
+                    </div>
+                `;
+            } else {
+                window.location.href = 'login.html';
+            }
+        }
+
+        function connectToServer() {
+            alert('Sunucuya bağlanma özelliği yakında eklenecek!');
+        }
+
+        function refreshData() {
+            loadDashboardData();
+            alert('Veriler yenilendi!');
+        }
+
+        function openDonation() {
+            window.open('bagis.html', '_blank');
+        }
+
+        function openRules() {
+            window.open('nasil-oynanir.html', '_blank');
+        }
+
+        function openSupport() {
+            alert('Destek sistemi yakında eklenecek!');
+        }
+
+        function openDiscord() {
+            window.open('https://discord.gg/grantroleplay', '_blank');
+        }
+
+        function logout() {
+            // API'den çıkış yap
+            if (typeof api !== 'undefined') {
+                api.logout();
+            }
+            
+            sessionStorage.removeItem('user');
+            sessionStorage.removeItem('characters');
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html> 

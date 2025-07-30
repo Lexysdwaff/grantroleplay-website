@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giriş Yap - GRANT Roleplay</title>
+    <link rel="icon" href="images/logo.png" type="image/svg+xml">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body class="login-page">
+    <header>
+        <div class="logo">
+            <a href="index.html"><img src="images/logo.png" alt="GRANT Roleplay Logo"></a>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html"><i class="fas fa-home"></i> Ana Sayfa</a></li>
+                <li><a href="nasil-oynanir.html"><i class="fas fa-gamepad"></i> Nasıl Oynanır</a></li>
+                <li><a href="https://discord.com/invite/grant" target="_blank"><i class="fab fa-discord"></i> Discord</a></li>
+                <li><a href="bagis.html"><i class="fas fa-gift"></i> Bağış Yap</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="login-container">
+        <div class="login-form-container">
+            <div class="login-logo">
+                <img src="images/logo.png" alt="GRANT Roleplay Logo">
+            </div>
+            
+            <h2 class="login-title">Giriş Yap</h2>
+            
+            <form class="login-form" id="loginForm">
+                <div class="form-group">
+                    <div class="input-with-icon">
+                        <input type="text" id="username" name="username" placeholder="Kullanıcı Adı" required>
+                        <i class="fas fa-user"></i>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <div class="input-with-icon">
+                        <input type="password" id="password" name="password" placeholder="Şifre" required>
+                        <i class="fas fa-lock"></i>
+                    </div>
+                </div>
+                
+                <button type="submit" class="login-submit-btn">
+                    <i class="fas fa-sign-in-alt"></i>
+                    <span>Giriş Yap</span>
+                </button>
+            </form>
+            
+            <div class="login-links">
+                <a href="#" id="forgotPassword">Şifremi Unuttum</a>
+                <span class="divider">|</span>
+                <a href="register.html">Hesap Oluştur</a>
+            </div>
+            
+            <div class="login-info">
+                <p>Hesabınız yok mu? Hemen ücretsiz kayıt olun!</p>
+            </div>
+            
+            <div class="social-login">
+                <p>Veya şunlarla giriş yapın:</p>
+                <div class="social-icons">
+                    <a href="#" class="social-icon discord">
+                        <i class="fab fa-discord"></i>
+                    </a>
+                    <a href="#" class="social-icon steam">
+                        <i class="fab fa-steam"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="login-footer">
+            <a href="index.html">
+                <i class="fas fa-arrow-left"></i>
+                Ana Sayfaya Dön
+            </a>
+        </div>
+        
+        <div class="login-copyright">
+            <p>© 2023 GRANT Roleplay. Tüm hakları saklıdır.</p>
+        </div>
+    </div>
+
+    <script src="api.js"></script>
+    <script>
+        // Login form handling
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            // Basit doğrulama
+            if (!username || !password) {
+                alert('Lütfen tüm alanları doldurun!');
+                return;
+            }
+            
+            try {
+                // Submit butonunu devre dışı bırak
+                const submitBtn = document.querySelector('.login-submit-btn');
+                const originalText = submitBtn.innerHTML;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i><span>Giriş yapılıyor...</span>';
+                submitBtn.disabled = true;
+                
+                // API'ye giriş isteği gönder
+                const response = await api.login({ username, password });
+                
+                // Kullanıcı bilgilerini session storage'a kaydet
+                sessionStorage.setItem('user', JSON.stringify(response.user));
+                
+                // Karakter bilgilerini getir
+                try {
+                    const characters = await api.getUserCharacters(response.user.id);
+                    sessionStorage.setItem('characters', JSON.stringify(characters));
+                } catch (error) {
+                    console.error('Karakter bilgileri alınamadı:', error);
+                    // Varsayılan karakter bilgileri
+                    sessionStorage.setItem('characters', JSON.stringify([{
+                        name: response.user.username,
+                        level: 1,
+                        job: 'İşsiz',
+                        money: 1000
+                    }]));
+                }
+                
+                console.log('Login successful:', response.user);
+                
+                // Başarılı giriş mesajı
+                alert('Giriş başarılı! Hoş geldiniz, ' + response.user.username);
+                
+                // Dashboard'a yönlendir
+                window.location.href = 'dashboard.html';
+                
+            } catch (error) {
+                console.error('Login error:', error);
+                alert('Giriş hatası: ' + error.message);
+                
+                // Submit butonunu tekrar aktif et
+                const submitBtn = document.querySelector('.login-submit-btn');
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }
+        });
+        
+        // Forgot password handling
+        document.getElementById('forgotPassword').addEventListener('click', function(e) {
+            e.preventDefault();
+            alert('Şifre sıfırlama özelliği yakında eklenecek!');
+        });
+    </script>
+</body>
+</html> 
